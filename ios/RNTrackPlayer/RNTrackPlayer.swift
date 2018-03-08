@@ -30,14 +30,14 @@ class RNTrackPlayer: RCTEventEmitter, MediaWrapperDelegate {
             "track": trackId,
             "position": time,
             "nextTrack": nextTrackId
-        ])
+            ])
     }
     
     func playerExhaustedQueue(trackId: String?, time: TimeInterval?) {
-      sendEvent(withName: "playback-queue-ended", body: [
-          "track": trackId,
-          "position": time,
-      ])
+        sendEvent(withName: "playback-queue-ended", body: [
+            "track": trackId,
+            "position": time,
+            ])
     }
     
     func playbackFailed(error: Error) {
@@ -113,14 +113,13 @@ class RNTrackPlayer: RCTEventEmitter, MediaWrapperDelegate {
         let remoteCenter = MPRemoteCommandCenter.shared()
         let castedCapabilities = (options["capabilities"] as? [String])
         let capabilities = castedCapabilities?.flatMap { Capability(rawValue: $0) } ?? []
-        
-        let enableStop = capabilities.contains(.stop)
-        let enablePause = capabilities.contains(.pause)
-        let enablePlay = capabilities.contains(.play)
-        let enablePlayNext = capabilities.contains(.next)
-        let enablePlayPrevious = capabilities.contains(.previous)
-        let enableSkipForward = capabilities.contains(.jumpForward)
-        let enableSkipBackward = capabilities.contains(.jumpBackward)
+        let enableStop = true //capabilities.contains(.stop)
+        let enablePause = true //capabilities.contains(.pause)
+        let enablePlay = true //capabilities.contains(.play)
+        let enablePlayNext = false //capabilities.contains(.next)
+        let enablePlayPrevious = false //capabilities.contains(.previous)
+        let enableSkipForward = true //capabilities.contains(.jumpForward)
+        let enableSkipBackward = true //capabilities.contains(.jumpBackward)
         
         toggleRemoteHandler(command: remoteCenter.stopCommand, selector: #selector(remoteSentStop), enabled: enableStop)
         toggleRemoteHandler(command: remoteCenter.pauseCommand, selector: #selector(remoteSentPause), enabled: enablePause)
@@ -323,3 +322,4 @@ class RNTrackPlayer: RCTEventEmitter, MediaWrapperDelegate {
         sendEvent(withName: "remote-pause", body: nil)
     }
 }
+
